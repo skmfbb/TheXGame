@@ -6,7 +6,14 @@ public class PlayerScript : MonoBehaviour {
     public float speed = 2.0f;
     public float moveForce = 5.0f;			// Amount of force added to move the player left and right.
     public float maxSpeed = 5.0f;
+    
+    //jumping staff
     public float jumpForce = 2.0f;
+    bool grounded = false;
+    public Transform groundCheck;
+    float groundRadius = 0.2f;
+    public LayerMask whatIsGround;
+    
     public float reachRadius = 0.3f;
 
     private Collider2D activeObject;
@@ -16,18 +23,34 @@ public class PlayerScript : MonoBehaviour {
 	void Start () {
 	
 	}
-	
-	// Update is called once per frame
-	void Update () {
+
+    //physics staff here
+    void FixedUpdate() { 
+        grounded = Physics2D.OverlapCircle(groundCheck.position, groundRadius, whatIsGround);
+
         float horizontalMovement = Input.GetAxis("Horizontal");
         float verticalMovement = Input.GetAxis("Vertical");
 
         bool playerMoved = (horizontalMovement != 0 || verticalMovement != 0);
-        rigidbody2D.AddForce(Vector2.right * horizontalMovement * moveForce);
-        if (Mathf.Abs(rigidbody2D.velocity.x) > maxSpeed)
-            rigidbody2D.velocity = new Vector2(Mathf.Sign(rigidbody2D.velocity.x) * maxSpeed, rigidbody2D.velocity.y);
+       
+        //rigidbody2D.AddForce(Vector2.right * horizontalMovement * moveForce);
+       
+        //if (Mathf.Abs(rigidbody2D.velocity.x) > maxSpeed)
+          //  rigidbody2D.velocity = new Vector2(Mathf.Sign(rigidbody2D.velocity.x) * maxSpeed, rigidbody2D.velocity.y);
 
-        if (Input.GetButton("Jump"))
+        rigidbody2D.velocity = new Vector2(horizontalMovement * maxSpeed, rigidbody2D.velocity.y);// isn't it enough to use simple horizontal speed and add force only in jumping cases?
+
+        if (playerMoved)
+        {
+            if (!CheckIfActiveStillInRange())
+                ReselectActive();
+        }
+    }
+    
+	// button events here fir better accuracy
+	void Update () {
+
+        if (Input.GetButton("Jump") && grounded)
             rigidbody2D.AddForce(new Vector2(0f, jumpForce));
 
         if (Input.GetButton("Fire1"))
@@ -35,13 +58,6 @@ public class PlayerScript : MonoBehaviour {
             currentActiveIndex++;
             SelectActive();
         }
-
-        if (playerMoved)
-        {
-            if (!CheckIfActiveStillInRange())
-                ReselectActive();
-        }
-
         
 	}
 
