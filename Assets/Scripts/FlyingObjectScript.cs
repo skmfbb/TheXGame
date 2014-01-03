@@ -19,15 +19,30 @@ public class FlyingObjectScript : MonoBehaviour {
 	void Update () {
 	
 	}
+    //host collider for player triggering
+    void OnTriggerEnter2D(Collider2D other) {
+        if (other.tag == "Player") {
+            other.gameObject.transform.parent = this.gameObject.transform;
+        }
+    }
+ 
+     void OnTriggerExit2D(Collider2D other) {
+         if (other.tag == "Player")
+         {
+             other.gameObject.transform.parent = null;
+         }
+    }
+
 
     void FixedUpdate()
     {
+ 
        
         {
             float moveStep = movementDelta / 100 * currentDirectionSign * moveSpeed;
             if (moveHorizontalAxis)
             {
-                transform.position += new Vector3(moveStep, 0.0f, 0.0f);
+               transform.position += new Vector3(moveStep, 0.0f, 0.0f);         
             }
             if (moveVerticalAxis)
             {

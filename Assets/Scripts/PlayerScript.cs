@@ -33,18 +33,18 @@ public class PlayerScript : MonoBehaviour {
 
         bool playerMoved = (horizontalMovement != 0 || verticalMovement != 0);
        
-        //rigidbody2D.AddForce(Vector2.right * horizontalMovement * moveForce);
+       // rigidbody2D.AddForce(Vector2.right * horizontalMovement * moveForce);
        
-        //if (Mathf.Abs(rigidbody2D.velocity.x) > maxSpeed)
-          //  rigidbody2D.velocity = new Vector2(Mathf.Sign(rigidbody2D.velocity.x) * maxSpeed, rigidbody2D.velocity.y);
+     //   if (Mathf.Abs(rigidbody2D.velocity.x) > maxSpeed)
+    //        rigidbody2D.velocity = new Vector2(Mathf.Sign(rigidbody2D.velocity.x) * maxSpeed, rigidbody2D.velocity.y);
 
         rigidbody2D.velocity = new Vector2(horizontalMovement * maxSpeed, rigidbody2D.velocity.y);// isn't it enough to use simple horizontal speed and add force only in jumping cases?
 
-        if (playerMoved)
-        {
-            if (!CheckIfActiveStillInRange())
-                ReselectActive();
-        }
+        //if (playerMoved)
+        //{
+        //    if (!CheckIfActiveStillInRange())
+        //        ReselectActive();
+        //}
     }
     
 	// button events here fir better accuracy
